@@ -64,4 +64,6 @@ app.post('/api/candidato', upload.single('anexo'), (req, res, next) => {
         });
 })
 
-app.listen(3030, () => console.log("Servidor escutando na porta 3030..."));
+app.listen(
+    process.env.PORT || 3333
+)
