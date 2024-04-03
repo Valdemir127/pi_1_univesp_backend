@@ -3,10 +3,11 @@ import { json } from "express"
 import multer from "multer"
 import cors from "cors"
 import { MailerSend, EmailParams, Sender, Recipient, Attachment } from "mailersend"
-import EmailTemplate from './EmailTemplate'
+import fs from "fs"
 
 const app = express();
 const upload = multer();
+const modelo_email = fs.readFileSync("./src/modelo_email.html", "utf-8")
 
 app.use(cors());
 app.use(json());
@@ -16,45 +17,31 @@ app.get('/', (req, res, next) => {
 })
 
 app.post('/api/candidato', upload.single('anexo'), (req, res, next) => {
+    const {nome, email, mensagem, mail_to, mail_to_nome} = req.body
 
-    // const nome = req.body.nome
-    // const email = req.body.email
-    // const mensagem = req.body.mensagem
-
-    const {nome, email, mensagem} = req.body
-
-    const candidato = {
-        nome: 'João Silva',
-        email: 'joao@example.com',
-        mensagem: 'Estou interessado na posição disponível...'
-    }
-
-    const htmlEmail = ReactDOMServer.renderToString(
-        <EmailTemplate
-            nomeEmpresa="Empresa XYZ"
-            nomeCandidato={candidato.nome}
-            emailCandidato={candidato.email}
-            mensagemCandidato={candidato.mensagem}
-        />
-    );
+    const emailPreenchido = modelo_email
+    .replace("[destinatario]", process.env.MAIL_TO_NAME)
+    .replace("[nome]", nome)
+    .replace("[email]", email)
+    .replace("[mensagem]", mensagem)
 
     const mailerSend = new MailerSend({
         apiKey: process.env.MAILERSEND_API_KEY,
     });
 
-    const sentFrom = new Sender("noreply@trial-0p7kx4xqoeeg9yjr.mlsender.net", "PI Univesp 2024 Grupo 13");
-
-    const recipients = [
-        new Recipient("valdemir127@gmail.com", "Valdemir")
-    ];
-
     const emailParams = new EmailParams()
-        .setFrom(sentFrom)
-        .setTo(recipients)
-        .setReplyTo(sentFrom)
+        .setFrom(
+            new Sender("noreply@trial-0p7kx4xqoeeg9yjr.mlsender.net", "PI Univesp 2024 Grupo 13")
+        )
+        .setTo([
+            //new Recipient(process.env.MAIL_TO, process.env.MAIL_TO_NAME)
+            new Recipient(mail_to, mail_to_nome)
+        ])
+        .setReplyTo(
+            new Sender(email, nome)
+        )
         .setSubject("Recebimento de CV")
-        .setHtml("<strong>This is the HTML content</strong>")
-        .setText("This is the text content");
+        .setHtml(emailPreenchido)
 
     if (req.file) {
         const anexo = req.file;
@@ -68,13 +55,13 @@ app.post('/api/candidato', upload.single('anexo'), (req, res, next) => {
         emailParams.setAttachments(attachments)
     }
 
-    // mailerSend.email.send(emailParams)
-    //     .then(response => {
-    //         res.json(response);
-    //     })
-    //     .catch(error => {
-    //         res.json(error);
-    //     });
+    mailerSend.email.send(emailParams)
+        .then(response => {
+            res.json(response);
+        })
+        .catch(error => {
+            res.json(error);
+        });
 })
 
 app.listen(3030, () => console.log("Servidor escutando na porta 3030..."));

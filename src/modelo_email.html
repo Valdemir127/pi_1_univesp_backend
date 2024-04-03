@@ -4,24 +4,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Notificação de Candidato</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .email-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .details-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .details-list li {
+            margin-bottom: 10px;
+        }
+
+        .details-list li strong {
+            margin-right: 5px;
+        }
+
+        hr {
+            border-top: 1px solid #dee2e6;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .disclaimer {
+            font-size: 0.8rem;
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
-    <p>Caro [Nome da Empresa],</p>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="email-container">
+                    <p>Caro [destinatario],</p>
+                    <p>Gostaríamos de informar que um novo candidato se cadastrou com sucesso em nosso sistema.</p>
 
-    <p>Gostaríamos de informar que um novo candidato se cadastrou com sucesso em nosso sistema.</p>
+                    <p><strong>Detalhes do candidato:</strong></p>
+                    <ul class="details-list">
+                        <li><strong>Nome:</strong> [nome]</li>
+                        <li><strong>E-mail:</strong> [email]</li>
+                        <li><strong>Mensagem:</strong> [mensagem]</li>
+                    </ul>
 
-    <p><strong>Detalhes do candidato:</strong></p>
-    <ul>
-        <li><strong>Nome:</strong>[nome]</li>
-        <li><strong>E-mail:</strong>[email]</li>
-        <li><strong>Mensagem:</strong>[mensagem]</li>
-    </ul>
-
-    <p>Segue anexo curriculo do mesmo.</p>
-    <hr>
-    <p><em>Este é um e-mail automático. Por favor, não responda a este e-mail.</em></p>
+                    <p>Segue anexo currículo do mesmo.</p>
+                    <hr>
+                    <p class="disclaimer">Este é um e-mail automático. Por favor, não responda a este e-mail.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-
 </html>

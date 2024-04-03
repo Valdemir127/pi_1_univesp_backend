@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node -r dotenv/config ./src/api.js",
-    "dev": "nodemon -r dotenv/config ./src/api.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon -r dotenv/config ./src/api.js"
   },
   "keywords": [],
   "author": "",
