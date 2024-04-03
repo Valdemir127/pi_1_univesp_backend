@@ -13,10 +13,12 @@ app.use(cors());
 app.use(json());
 
 app.get('/', (req, res, next) => {
+    console.log(req)
     res.json({ message: "Tudo ok por aqui!" });
 })
 
 app.post('/api/candidato', upload.single('anexo'), (req, res, next) => {
+    console.log(req)
     const { nome, email, mensagem, mail_to, mail_to_nome } = req.body
 
     const emailPreenchido = modelo_email
