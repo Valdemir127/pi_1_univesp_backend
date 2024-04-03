@@ -17,13 +17,13 @@ app.get('/', (req, res, next) => {
 })
 
 app.post('/api/candidato', upload.single('anexo'), (req, res, next) => {
-    const {nome, email, mensagem, mail_to, mail_to_nome} = req.body
+    const { nome, email, mensagem, mail_to, mail_to_nome } = req.body
 
     const emailPreenchido = modelo_email
-    .replace("[destinatario]", process.env.MAIL_TO_NAME)
-    .replace("[nome]", nome)
-    .replace("[email]", email)
-    .replace("[mensagem]", mensagem)
+        .replace("[destinatario]", process.env.MAIL_TO_NAME)
+        .replace("[nome]", nome)
+        .replace("[email]", email)
+        .replace("[mensagem]", mensagem)
 
     const mailerSend = new MailerSend({
         apiKey: process.env.MAILERSEND_API_KEY,
@@ -64,6 +64,9 @@ app.post('/api/candidato', upload.single('anexo'), (req, res, next) => {
         });
 })
 
+const port = process.env.PORT ? process.env.PORT : 3333
+
 app.listen(
-    process.env.PORT || 3333
-)
+    port,
+    () => console.log("Servidor escutando na porta " + port)
+);
